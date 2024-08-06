@@ -1,0 +1,10 @@
+model OrderItens {
+    orderId  Int
+    order    Order @relation(fields: [orderId], references: [id])
+    itemId   Int
+    item     Item  @relation(fields: [itemId], references: [id])
+    quantity Int
+    price    Int
+
+    @@id([orderId, itemId])
+}
