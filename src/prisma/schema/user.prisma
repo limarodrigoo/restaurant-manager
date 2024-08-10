@@ -1,0 +1,13 @@
+model User {
+    id        Int       @id @default(autoincrement())
+    username  String    @unique
+    password  String
+    role      UserRoles @default(STAFF)
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+}
+
+enum UserRoles {
+    ADMIN
+    STAFF
+}
