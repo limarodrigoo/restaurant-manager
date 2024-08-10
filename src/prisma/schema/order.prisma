@@ -3,4 +3,6 @@ model Order {
     billId     Int
     bill       Bill         @relation(fields: [billId], references: [id])
     OrderItens OrderItens[]
+    createdAt  DateTime     @default(now())
+    updatedAt  DateTime     @updatedAt
 }
