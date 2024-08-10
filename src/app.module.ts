@@ -11,6 +11,8 @@ import { ItensController } from './itens/itens.controller';
 import { BillsController } from './bills/bills.controller';
 import { OrdersController } from './orders/orders.controller';
 import { RestaurantsController } from './restaurants/restaurants.controller';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { RestaurantsController } from './restaurants/restaurants.controller';
     RestaurantsModule,
     OrdersModule,
     BillsModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
