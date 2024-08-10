@@ -1,20 +1,27 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import SigninDto from './dto/auth.dto';
 import { DatabaseService } from 'src/database/database.service';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly database: DatabaseService) {}
-  async signin(signinDto: SigninDto) {
+  constructor(
+    private readonly database: DatabaseService,
+    private readonly jwtService: JwtService,
+  ) {}
+  async signin(username: string, password: string) {
     const user = await this.database.user.findUnique({
       where: {
-        username: signinDto.username,
+        username: username,
       },
     });
-    if (user.password !== signinDto.password) {
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (!checkPassword) {
       throw new UnauthorizedException();
     }
     delete user.password;
-    return user;
+    return {
+      accesToken: await this.jwtService.signAsync(user),
+    };
   }
 }

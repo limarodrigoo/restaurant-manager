@@ -13,9 +13,14 @@ import { OrdersController } from './orders/orders.controller';
 import { RestaurantsController } from './restaurants/restaurants.controller';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import configuration from './config/configuration';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [configuration],
+    }),
     DatabaseModule,
     ItensModule,
     RestaurantsModule,
