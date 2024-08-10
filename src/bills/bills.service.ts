@@ -12,7 +12,17 @@ export class BillsService {
   }
 
   async findAll() {
-    return this.database.bill.findMany();
+    return this.database.bill.findMany({
+      include: {
+        orders: {
+          select: {
+            OrderItens: {
+              select: { item: true, quantity: true, createdAt: true },
+            },
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: number) {
