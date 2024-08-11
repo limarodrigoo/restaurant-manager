@@ -6,11 +6,11 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
   constructor(private readonly database: DatabaseService) {}
-  async create(createUserDto: Prisma.UserCreateInput) {
-    const hash = await bcrypt.hash(createUserDto.password, 10);
+  async create(username: string, password: string) {
+    const hash = await bcrypt.hash(password, 10);
     return this.database.user.create({
       data: {
-        username: createUserDto.username,
+        username: username,
         password: hash,
       },
     });
