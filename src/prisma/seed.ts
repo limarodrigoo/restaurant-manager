@@ -117,6 +117,14 @@ async function main() {
     });
   }
 
+  async function getItemPrice(itemId) {
+    const item = await prisma.item.findUnique({
+      where: { id: itemId },
+      select: { price: true },
+    });
+    return item.price;
+  }
+
   // Create bills
   const bill1 = await prisma.bill.create({
     data: {
@@ -138,10 +146,10 @@ async function main() {
       billId: bill1.id,
       OrderItens: {
         create: [
-          { itemId: 1, quantity: 2 }, // 2 Spaghetti Bolognese
-          { itemId: 2, quantity: 1 }, // 1 Margherita Pizza
-          { itemId: 6, quantity: 2 }, // 2 Espresso
-          { itemId: 7, quantity: 1 }, // 1 Glass of Chianti
+          { itemId: 1, quantity: 2, price: await getItemPrice(1) }, // 2 Spaghetti Bolognese
+          { itemId: 2, quantity: 1, price: await getItemPrice(2) }, // 1 Margherita Pizza
+          { itemId: 6, quantity: 2, price: await getItemPrice(6) }, // 2 Espresso
+          { itemId: 7, quantity: 1, price: await getItemPrice(7) }, // 1 Glass of Chianti
         ],
       },
     },
@@ -152,10 +160,10 @@ async function main() {
       billId: bill2.id,
       OrderItens: {
         create: [
-          { itemId: 10, quantity: 3 }, // 3 California Rolls
-          { itemId: 11, quantity: 2 }, // 2 Miso Soups
-          { itemId: 16, quantity: 2 }, // 2 Green Teas
-          { itemId: 18, quantity: 1 }, // 1 Ramune
+          { itemId: 10, quantity: 3, price: await getItemPrice(10) }, // 3 California Rolls
+          { itemId: 11, quantity: 2, price: await getItemPrice(11) }, // 2 Miso Soups
+          { itemId: 16, quantity: 2, price: await getItemPrice(16) }, // 2 Green Teas
+          { itemId: 18, quantity: 1, price: await getItemPrice(18) }, // 1 Ramune
         ],
       },
     },
