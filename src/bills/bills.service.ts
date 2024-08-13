@@ -7,7 +7,6 @@ import { DatabaseService } from 'src/database/database.service';
 export class BillsService {
   constructor(private readonly database: DatabaseService) {}
   async create(createBillDto: Prisma.BillCreateInput) {
-    console.log(createBillDto);
     return this.database.bill.create({ data: createBillDto });
   }
 
@@ -17,7 +16,11 @@ export class BillsService {
         orders: {
           select: {
             OrderItens: {
-              select: { item: true, quantity: true, createdAt: true },
+              select: {
+                item: { select: { name: true } },
+                quantity: true,
+                price: true,
+              },
             },
           },
         },
@@ -26,7 +29,22 @@ export class BillsService {
   }
 
   async findOne(id: number) {
-    return this.database.bill.findUnique({ where: { id } });
+    return this.database.bill.findUnique({
+      where: { id },
+      include: {
+        orders: {
+          select: {
+            OrderItens: {
+              select: {
+                item: { select: { name: true } },
+                quantity: true,
+                price: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async update(id: number, updateBillDto: Prisma.BillUpdateInput) {
