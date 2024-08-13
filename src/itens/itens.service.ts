@@ -21,6 +21,18 @@ export class ItensService {
     });
   }
 
+  async findByArgument(argument: string, restaurantId: number) {
+    return this.database.item.findMany({
+      where: {
+        restaurantId,
+        name: {
+          contains: argument,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
+
   async update(id: number, updateItem: Prisma.ItemUpdateInput) {
     return this.database.item.update({
       where: {

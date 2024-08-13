@@ -41,4 +41,17 @@ export class ItensController {
   remove(@Param('id') id: string) {
     return this.itensService.remove(+id);
   }
+
+  @Get('restaurant/:restaurantId')
+  findByRestaurant(@Param('restaurantId') id: string) {
+    return this.itensService.findByArgument('', +id);
+  }
+
+  @Get(':restaurantId/:argument')
+  findByArgument(
+    @Param('restaurantId') restaurantId: string,
+    @Param('argument') argument: string,
+  ) {
+    return this.itensService.findByArgument(argument, +restaurantId);
+  }
 }
